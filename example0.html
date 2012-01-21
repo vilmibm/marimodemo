@@ -1,0 +1,34 @@
+<html>
+<head>
+    <title>marimo demo</title>
+    <script src="/jquery-1.7.1.min.js"></script>
+    <script src="/mustache.js"></script>
+    <script src="/marimo.js"></script>
+    <script>
+        marimo.init($);
+        marimo.widgetlib.twitter_widget = marimo.extend(marimo.widgetlib.request_widget, {
+            transform: function (data) { return { context: {tweets:data} }; }
+        });
+    </script>
+</head>
+<body>
+    <h1>marimo twitter demo.</h1>
+    <p>We're going to access the twitter public timeline through a proxy and format
+    it with a mustache template.</p>
+    <div id="tweets" style="display:none;">
+        <ul>
+        {{#tweets}}
+           <li>{{text}}</li>
+        {{/tweets}}
+        </ul>
+    </div>
+    <script>
+        marimo.add_widget({
+            id:'tweets',
+            murl:'http://borges.cei.cox.com:8001/',
+            widget_prototype:'twitter_widget'
+        });
+        marimo.widgets.tweets.make_request();
+    </script>
+</body>
+</html>
