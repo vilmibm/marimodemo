@@ -1,0 +1,93 @@
+<html>
+<head>
+    <title>marimo demo</title>
+    <script src="/jquery-1.7.1.min.js"></script>
+    <script src="/mustache.js"></script>
+    <script src="/marimo/lib/marimo.js"></script>
+    <script>
+        var m = marimo;
+        m.pf = m.printf;
+        m.init($);
+        m.widgetlib.twitter_widget = m.extend(m.widgetlib.request_widget, {
+            transform: function (data) {
+                var self = this;
+                return {
+                    context: {
+                        tweets:data,
+                        refresh_interval: function() {
+                            return self.refresh_interval;
+                        },
+                        disabled: function() {
+                            return (self.timer ? 'disabled="t"' : '');
+                        }
+                    }
+                };
+            },
+            init: function (data) {
+                m.widgetlib.request_widget.init.call(this, data);
+                this.__defineGetter__('refresh_interval', function() {
+                    var selector = m.pf('#%s input',[this.id]);
+                    var maybe_set = m.$(selector).attr('value');
+                    maybe_set = (maybe_set ? maybe_set : 5000);
+                    return maybe_set;
+                });
+            },
+            render: function () {
+                m.widgetlib.request_widget.render.call(this);
+                tweets.domwire([{
+                    selector: m.pf('#%s button:first', [this.id]),
+                    event: 'click',
+                    cb: this.make_request
+                }, {
+                    selector: m.pf('#%s button:last', [this.id]),
+                    event: 'click',
+                    cb: this.toggle_auto
+                }]);
+            },
+            toggle_auto: function () {
+                if (this.timer) {
+                    clearTimeout(this.timer);
+                    this.timer = null;
+                    m.$(m.pf('#%s button:first', [this.id])).removeAttr('disabled');
+                    m.$(m.pf('#%s input',[this.id])).removeAttr('disabled');
+                    return;
+                }
+                m.$(m.pf('#%s button:first', [this.id])).attr('disabled', 't');
+                m.$(m.pf('#%s input',[this.id])).attr('disabled', 't');
+                var self = this;
+                var refresh = function() {
+                    m.$(m.pf('#%s', [this.id])).fadeOut(200);
+                    self.make_request();
+                    self.timer = setTimeout(refresh, self.refresh_interval);
+                };
+                refresh();
+            }
+        });
+    </script>
+</head>
+<body>
+    <h1>marimo twitter demo.</h1>
+    <p>We're going to access the twitter public timeline through a proxy and format
+    it with a mustache template.</p>
+    <p>We've added a few features: a manual refresh button an an auto-refresh toggler/setter.</p>
+    <div id="tweets" style="display:none;">
+        <button type="button" {{disabled}} >refresh</button>
+        <button type="button" >toggle auto refresh</button>
+        <label>refresh interval (seconds)</label> <input {{disabled}} type="text" value="{{refresh_interval}}" />
+        <ul>
+        {{#tweets}}
+           <li>{{text}}</li>
+        {{/tweets}}
+        </ul>
+    </div>
+    <script>
+        m.add_widget({
+            id:'tweets',
+            murl:'http://borges.cei.cox.com:8001/',
+            widget_prototype:'twitter_widget'
+        });
+        var tweets = m.widgets.tweets;
+        tweets.make_request();
+    </script>
+</body>
+</html>
