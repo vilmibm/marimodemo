@@ -16,6 +16,10 @@ being a sample response from twitter full of tweets from the public timeline.
 
 being a simple noninteractive single-load twitter public timeline widget.
 
+#### exampel1.html
+
+being a twitter widget with a fancier template a refresh button and configurable autorefresh
+
 ## author
 
 Nathaniel Smith
