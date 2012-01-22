@@ -1,0 +1,11 @@
+{% block content %}
+    {% load marimo %}
+
+    <!-- Blog entry ... -->
+
+    {% with content_type_id=object|content_type_id %}
+     <!--  tag    js prototype    django handler  arg 1           arg 2                 kwarg 1 -->
+        {% marimo medley_comments medley_comments content_type_id object.medleyentry.pk page=1 %}
+    {% endwith %}
+
+{% endblock content %}

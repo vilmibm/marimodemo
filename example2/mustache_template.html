@@ -1,0 +1,59 @@
+<div id="comments" style="display:none;">
+    <h3 class="cmComments">
+        <span class="sprite iconComments"></span>
+        Comments
+    </h3>
+    <h4>Post comment</h4>
+    <h2>UITODO: PLACEHOLDER FOR WHAT WILL BE A DIALOG OPENED IN widgets.js:11ish</h2>
+    <div id="comments_abuse" class="cmAbuseForm" style="border:1px solid red"></div>
+    <img id="cmCurrentUserAvatar" src="FIXME"/>
+    <form id="cmSubmitComment">
+        <input type="hidden" name="bid" value={{bid}} />
+        <textarea id="cmCommentField" name="text"></textarea>
+        <input type="submit" value="Post comment" />
+    </form>
+    <div class="list comment_list" data-poster="{{poster}}">
+        {{#comments}}
+        <div class="cmListItem cmClearfixcomment" id="{{comment_id}}">
+            <div class="avatar">
+                {{# visible }}
+                <a class="avatar_link" href="{{poster_href}}">
+                    <img src="{{avatar_href}}" title="{{poster}}" height="48px" width="48px" alt="{{poster}}'s avatar" class="avatar_img cmLightBoxShadow" />
+                </a>
+                {{/visible}}
+            </div>
+            <div class="cmFlagArea">
+                {{#visible}}
+                <ul>
+                    <li class="sprite iconFlagged"><a href="{{flag_href}}" data-cid="{{comment_id}}" class="suggest_removal">Report Abuse</a></li>
+                </ul>
+                {{/visible}}
+            </div>
+            <div class="comment_text">
+                {{#visible}}
+                <ul class="footer">
+                    <li>
+                        Posted by <a href="{{poster_href}}" title="{{poster}}">{{poster}}</a>
+                        at <a class="permalink" href="{{comment_href}}">{{submit_date}}</a>
+                    </li>
+                    <li class="edit" style="display:none"><a data-submitted="{{submitted_ts}}" data-cid="{{comment_id}}" href="{{ edit_href }}">Edit</a></li>
+                </ul>
+                {{/visible}}
+                <p>{{text}}</p>
+            </div>
+            <div class="cmClear"></div>
+        </div>
+        {{/comments}}
+        <div class="pagination">
+            <a style="display:none" class="older" href="#older">Older</a>
+            <span>Page {{page}} of {{num_pages}}</span>
+            <a style="display:none" class="newer" href="#newer">Newer</a>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    // comments have been loaded. NOTE ie9 doesn't always guarantee that being
+    // after something in raw HTML means it's been parsed into DOM. This may
+    // need to be guarded with our ie9 class conditional
+    marimo.emit('comments_loaded');
+</script>
