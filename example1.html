@@ -19,6 +19,12 @@
                         },
                         disabled: function() {
                             return (self.timer ? 'disabled="t"' : '');
+                        },
+                        screen_name: function() {
+                            return this.user.screen_name;
+                        },
+                        profile_image: function() {
+                            return m.pf('<img src="%s" />', [this.user.profile_image_url]);
                         }
                     }
                 };
@@ -76,7 +82,12 @@
         <label>refresh interval (seconds)</label> <input {{disabled}} type="text" value="{{refresh_interval}}" />
         <ul>
         {{#tweets}}
-           <li>{{text}}</li>
+           <li>
+             <a href="http://twitter.com/{{screen_name}}">
+                {{{profile_image}}}
+             </a>
+             {{text}}
+           </li>
         {{/tweets}}
         </ul>
     </div>
