@@ -22,6 +22,6 @@ Nathaniel Smith
 Lead Developer
 Cox Media Group Digital & Strategy
 
-## License
+## license
 
 MIT
