@@ -40,7 +40,7 @@
             },
             render: function () {
                 m.widgetlib.request_widget.render.call(this);
-                tweets.domwire([{
+                this.domwire([{
                     selector: m.pf('#%s button:first', [this.id]),
                     event: 'click',
                     cb: this.make_request
