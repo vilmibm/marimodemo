@@ -1,0 +1,3 @@
+[submodule "marimo"]
+	path = marimo
+	url = git@github.com:coxmediagroup/marimo.git
