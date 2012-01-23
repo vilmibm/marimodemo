@@ -1,5 +1,6 @@
 # marimodemo
 
+these examples were written to accompany [these slides](http://bit.ly/marimopres).
 
 ## introducing
 
